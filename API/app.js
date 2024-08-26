@@ -1,11 +1,11 @@
 const express = require("express");
-const database = require("./config/db"); // Certifique-se de que o caminho está correto
-const userRoutes = require("./routes/userRoute");
+const database = require("./src/config/db"); // Certifique-se de que o caminho está correto
+const userRoutes = require("./src/routes/userRoute");
 const cors = require("cors");
 const app = express();
 
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./docs/swagger.json");
+const swaggerDocument = require("./src/docs/swagger.json");
 
 // Configuração do Swagger UI
 app.use(
@@ -34,8 +34,12 @@ app.use(express.static("public"));
 // Definir rotas
 app.use("/users", userRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT);
+const PORT = process.env.PORT || 3333;
+const HOST = "0.0.0.0";
+
+app.listen(PORT, HOST, () => {
+  console.log(`Server running on http://${HOST}:${PORT}`);
+});
 
 // Sincronizar o banco de dados (opcional)
 // (async () => {

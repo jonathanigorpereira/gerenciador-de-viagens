@@ -1,16 +1,22 @@
-const crypto = require("crypto");
+import bcrypt from "bcryptjs";
 
 /**
- * Criptografa uma senha usando SHA-256.
+ * Criptografa uma senha usando bcrypt.
  * @param {string} password - A senha a ser criptografada.
- * @returns {string} - A senha criptografada em formato hexadecimal.
+ * @returns {Promise<string>} - A senha criptografada.
  */
-function hashPassword(password) {
-  const hash = crypto.createHash("sha256");
-  hash.update(password);
-  return hash.digest("hex");
-}
+export const hashPassword = async (password) => {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
+};
 
-module.exports = {
-  hashPassword,
+/**
+ * Compara uma senha em texto com uma senha criptografada.
+ * @param {string} password - A senha em texto.
+ * @param {string} hashedPassword - A senha já criptografada.
+ * @returns {Promise<boolean>} - Retorna true se as senhas coincidirem.
+ */
+export const comparePassword = async (password, hashedPassword) => {
+  return await bcrypt.compare(password, hashedPassword);
 };
